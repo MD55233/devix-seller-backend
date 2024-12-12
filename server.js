@@ -10,7 +10,7 @@ const app = express();
 const PORT = 8001;
 
 // ------------||Serve static files from the 'uploads' directory||----------------------
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+app.use('/uploads', express.static(path.join(__dirname, './uploads')));
 
 console.log('Attempting to start server on port:', PORT);
 
@@ -235,7 +235,7 @@ const TrainingBonusRejected = mongoose.model('TrainingBonusRejected', TrainingBo
 // Multer storage configuration
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, '../uploads/training-bonus'); // Uploads folder where files will be stored
+    cb(null, './uploads/training-bonus'); // Uploads folder where files will be stored
   },
   filename: function (req, file, cb) {
     const ext = path.extname(file.originalname);
@@ -396,7 +396,7 @@ const ReferralRejected = mongoose.model('ReferralRejected', referralRejectedSche
 // Multer storage configuration
 const referralStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, '../uploads/referral-plan-payment');
+    cb(null, './uploads/referral-plan-payment');
   },
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
@@ -878,7 +878,7 @@ app.get('/api/user/:userId/parent', async (req, res) => {
 // Multer storage configuration for profile pictures
 const profilePictureStorage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, '../uploads/profile-pictures')); // Ensure correct path
+    cb(null, path.join(__dirname, './uploads/profile-pictures')); // Ensure correct path
   },
   filename: function (req, file, cb) {
     const ext = path.extname(file.originalname);
