@@ -46,7 +46,15 @@ mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connected successfully'))
   .catch((err) => console.error('MongoDB connection error:', err));
-
+// Update CORS configuration
+app.use(
+  cors({
+    origin: ["http://localhost:8000", "https://your-production-domain.com"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  }),
+)
 // Your middleware and routes go here
 
 app.listen(PORT, (err) => {
@@ -66,15 +74,7 @@ process.on('SIGINT', () => {
 });
 app.use(bodyParser.json());
 
-// Update CORS configuration
-app.use(
-  cors({
-    origin: ["http://localhost:8000", "https://your-production-domain.com"],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-  }),
-)
+
 // User Model
 const userSchema = new mongoose.Schema(
   {
