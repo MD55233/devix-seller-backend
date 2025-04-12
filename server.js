@@ -1625,7 +1625,6 @@ const salarytransactionSchema = new mongoose.Schema({
 // Add indexing for performance
 salarytransactionSchema.index({ username: 1, transactionMonth: 1, transactionYear: 1 });
 
-module.exports = mongoose.model('SalaryTransaction', salarytransactionSchema);
 
 app.post('/api/salaries/:planId/claim', async (req, res) => {
   try {
