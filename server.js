@@ -1,46 +1,34 @@
 const express = require('express');
-const multer = require('multer');
-const path = require('path');
 const bodyParser = require('body-parser');
+const path = require('path');
 const mongoose = require('mongoose');
 const cors = require('cors');
-require('dotenv').config();
 const nodemailer = require('nodemailer');
-const jwt = require('jsonwebtoken');
-
+require('dotenv').config();
 const app = express();
-const PORT = 8001;
-
+const multer = require('multer');
 // Increase payload size limits using Express's built-in middleware
 app.use(express.json({ limit: '10mb' })); // For JSON payloads
 app.use(express.urlencoded({ limit: '10mb', extended: true })); // For URL-encoded payloads
 
 // SMTP Configuration for Hostinger Webmail
 const transporter = nodemailer.createTransport({
-  host: "smtp.hostinger.com",
-  port: 465,
-  secure: true,
-  auth: {
-      user: 'process.env.SMTP_EMAIL',
-      pass: 'process.env.SMTP_PASSWORD',
-  },
- auth: {
-    user: process.env.SMTP_EMAIL,
-    pass: process.env.SMTP_PASSWORD,
+host: "smtp.hostinger.com",
+port: 465,
+secure: true,
+auth: {
+    user: 'process.env.SMTP_EMAIL',
+    pass: 'process.env.SMTP_PASSWORD',
+},
+auth: {
+  user: process.env.SMTP_EMAIL,
+  pass: process.env.SMTP_PASSWORD,
 },
 
 });
 
-// Generate Random Username and Password
-const generateCredentials = () => {
-  const username = `user${Math.floor(1000 + Math.random() * 9000)}${Math.random().toString(36).substring(2, 4)}`; // e.g., user1234ab
-  const password = `${Math.random().toString(36).substring(2, 6)}${Math.floor(10 + Math.random() * 90)}`; // e.g., abcd42
 
-  return { username, password };
-};
-
-// ------------||Serve static files from the 'uploads' directory||----------------------
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+const PORT =  9001;
 
 console.log('Attempting to start server on port:', PORT);
 
@@ -49,15 +37,7 @@ mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connected successfully'))
   .catch((err) => console.error('MongoDB connection error:', err));
-// Update CORS configuration
-app.use(
-  cors({
-    origin: ["http://localhost:8000", "https://your-production-domain.com"],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-  }),
-)
+
 // Your middleware and routes go here
 
 app.listen(PORT, (err) => {
@@ -76,7 +56,15 @@ process.on('SIGINT', () => {
   });
 });
 app.use(bodyParser.json());
+app.use(cors());
 
+// Generate Random Username and Password
+const generateCredentials = () => {
+  const username = `user${Math.floor(1000 + Math.random() * 9000)}${Math.random().toString(36).substring(2, 4)}`; // e.g., user1234ab
+  const password = `${Math.random().toString(36).substring(2, 6)}${Math.floor(10 + Math.random() * 90)}`; // e.g., abcd42
+
+  return { username, password };
+};
 
 // User Model
 const userSchema = new mongoose.Schema(
