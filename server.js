@@ -9,7 +9,7 @@ const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
 
 const app = express();
-const PORT = 11000;
+const PORT = 7000;
 
 // SMTP Configuration for Hostinger Webmail
 const transporter = nodemailer.createTransport({
